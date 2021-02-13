@@ -1,0 +1,44 @@
+{
+  "name": "automatic-form-builder",
+  "version": "0.1.0",
+  "description": "An automatic formbuilder using @ng-stack/forms",
+  "main": "dist/index.js",
+  "bin": "dist/index.js",
+  "types": "dist",
+  "scripts": {
+    "build": "tsc -p .",
+    "tsc": "tsc",
+    "test": "jest",
+    "publish": "npm i && npm run build && npm publish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheRealKoeDev/automatic-form-builder.git"
+  },
+  "author": {
+    "name": "Sebastian Körner",
+    "email": "koerner.jena@web.de",
+    "url": "https://github.com/TheRealKoeDev/automatic-form-builder"
+  },
+  "homepage": "https://github.com/TheRealKoeDev/automatic-form-builder#readme",
+  "license": "MIT",
+  "dependencies": {
+    "reflect-metadata": "^0.1.13"
+  },
+  "devDependencies": {
+    "@angular/core": ">=9.0.0",
+    "@ng-stack/forms": ">=2.0.0",
+    "@types/jest": "^26.0.20",
+    "class-transformer": ">=0.2.0",
+    "class-validator": ">=0.13.0",
+    "jest": "^26.6.3",
+    "ts-jest": "^26.5.1",
+    "typescript": "^4.1.5"
+  },
+  "peerDependencies": {
+    "@angular/core": ">=9.0.0",
+    "@ng-stack/forms": ">=2.0.0",
+    "class-transformer": ">=0.2.0",
+    "class-validator": ">=0.13.0"
+  }
+}
