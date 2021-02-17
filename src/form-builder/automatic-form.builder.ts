@@ -15,7 +15,7 @@ import { DeepPartial } from './types/deep-partial';
 import { Dictionary } from './types/dictionary';
 import { MetadataType } from './types/metadata-type';
 
-const FORM_BUILDER_TOKEN = new InjectionToken<FormBuilder>(null);
+export const FORM_BUILDER_TOKEN = new InjectionToken<FormBuilder>(null);
 
 @Injectable({
     providedIn: 'root',

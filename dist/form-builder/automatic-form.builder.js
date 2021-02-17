@@ -9,20 +9,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AutomaticFormBuilder = void 0;
+exports.AutomaticFormBuilder = exports.FORM_BUILDER_TOKEN = void 0;
 const core_1 = require("@angular/core");
 const forms_1 = require("@angular/forms");
 const class_validator_1 = require("class-validator");
 const metadata_analyzer_1 = require("./metadata-analyzer");
 const type_store_1 = require("./type-store");
 const metadata_type_1 = require("./types/metadata-type");
-const FORM_BUILDER_TOKEN = new core_1.InjectionToken(null);
+exports.FORM_BUILDER_TOKEN = new core_1.InjectionToken(null);
 let AutomaticFormBuilder = class AutomaticFormBuilder {
     constructor(injector) {
         this.injector = injector;
     }
     build(type, data, options) {
-        const formBuilder = this.injector.get(FORM_BUILDER_TOKEN) || this.injector.get(forms_1.FormBuilder);
+        const formBuilder = this.injector.get(exports.FORM_BUILDER_TOKEN) || this.injector.get(forms_1.FormBuilder);
         const groupedConstraints = this.getContraints(type);
         const form = formBuilder.group({});
         const propertiesToBuild = this.getPropertiesToBuild(groupedConstraints, options === null || options === void 0 ? void 0 : options.formBuildMode, data);

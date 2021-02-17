@@ -1,7 +1,8 @@
-import { Injector, Type } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { InjectionToken, Injector, Type } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { AutomaticFormBuilderOptions } from './automatic-form-builder.options';
 import { DeepPartial } from './types/deep-partial';
+export declare const FORM_BUILDER_TOKEN: InjectionToken<FormBuilder>;
 export declare class AutomaticFormBuilder {
     private readonly injector;
     constructor(injector: Injector);
