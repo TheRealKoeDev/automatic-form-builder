@@ -9,8 +9,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+require("reflect-metadata");
 const class_validator_1 = require("class-validator");
 const metadata_analyzer_1 = require("../form-builder/metadata-analyzer");
+const metadata_type_1 = require("../form-builder/types/metadata-type");
 class TestClass {
 }
 __decorate([
@@ -44,21 +46,21 @@ describe('Should read the correct MetadataType for each property', () => {
     const groupedMetadata = metadataStore.groupByPropertyName(metadata);
     it('Sould identify primitive types', () => {
         const primitiveType = metadata_analyzer_1.getMetadataType(groupedMetadata.primitiveType);
-        expect(primitiveType).toBe(metadata_analyzer_1.MetadataType.Primitive);
+        expect(primitiveType).toBe(metadata_type_1.MetadataType.Primitive);
     });
     it('Sould identify array types', () => {
         const arrayType = metadata_analyzer_1.getMetadataType(groupedMetadata.arrayType);
-        expect(arrayType).toBe(metadata_analyzer_1.MetadataType.Array);
+        expect(arrayType).toBe(metadata_type_1.MetadataType.Array);
         const stringArrayType = metadata_analyzer_1.getMetadataType(groupedMetadata.stringArrayType);
-        expect(stringArrayType).toBe(metadata_analyzer_1.MetadataType.Array);
+        expect(stringArrayType).toBe(metadata_type_1.MetadataType.Array);
     });
     it('Sould identify object types', () => {
         const objectType = metadata_analyzer_1.getMetadataType(groupedMetadata.objectType);
-        expect(objectType).toBe(metadata_analyzer_1.MetadataType.Object);
+        expect(objectType).toBe(metadata_type_1.MetadataType.Object);
     });
     it('Sould identify object-array types', () => {
         const objectArrayType = metadata_analyzer_1.getMetadataType(groupedMetadata.objectArrayType);
-        expect(objectArrayType).toBe(metadata_analyzer_1.MetadataType.ObjectArray);
+        expect(objectArrayType).toBe(metadata_type_1.MetadataType.ObjectArray);
     });
 });
 //# sourceMappingURL=metadatatype-read.test.js.map

@@ -1,17 +1,14 @@
-import { Type } from '@angular/core';
-import { FormBuilder, FormGroup } from '@ng-stack/forms';
+import { Injector, Type } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { AutomaticFormBuilderOptions } from './automatic-form-builder.options';
-declare type FormBuilderData<T extends Object> = {
-    [P in keyof T]?: T[P] extends Array<infer U> ? Array<FormBuilderData<U>> : T[P] extends ReadonlyArray<infer U> ? ReadonlyArray<FormBuilderData<U>> : FormBuilderData<T[P]>;
-};
+import { DeepPartial } from './types/deep-partial';
 export declare class AutomaticFormBuilder {
-    private readonly formBuilder;
-    constructor(formBuilder: FormBuilder);
-    build<T extends Object>(type: Type<T>, data?: FormBuilderData<T>, options?: AutomaticFormBuilderOptions): FormGroup<T>;
-    private buildForm;
+    private readonly injector;
+    constructor(injector: Injector);
+    build<T extends Object>(type: Type<T>, data?: DeepPartial<T>, options?: AutomaticFormBuilderOptions): FormGroup;
     private getContraints;
     private getControl;
     private getPropertiesToBuild;
+    private shouldWriteNull;
 }
-export {};
 //# sourceMappingURL=automatic-form.builder.d.ts.map

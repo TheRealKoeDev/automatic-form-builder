@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getMetadataType = exports.MetadataType = void 0;
+exports.getMetadataType = void 0;
 const class_validator_1 = require("class-validator");
+const metadata_type_1 = require("./types/metadata-type");
 const arrayValidtionTypes = new Set([
     class_validator_1.IS_ARRAY,
     class_validator_1.ARRAY_CONTAINS,
@@ -15,13 +16,6 @@ const objectValidationTypes = new Set([
     class_validator_1.IS_INSTANCE,
     class_validator_1.ValidationTypes.NESTED_VALIDATION,
 ]);
-var MetadataType;
-(function (MetadataType) {
-    MetadataType[MetadataType["Array"] = 0] = "Array";
-    MetadataType[MetadataType["Object"] = 1] = "Object";
-    MetadataType[MetadataType["ObjectArray"] = 2] = "ObjectArray";
-    MetadataType[MetadataType["Primitive"] = 3] = "Primitive";
-})(MetadataType = exports.MetadataType || (exports.MetadataType = {}));
 const getMetadataType = (validationMetadata) => {
     let isArrayMetadata = false;
     let isObjectMetadata = false;
@@ -39,15 +33,15 @@ const getMetadataType = (validationMetadata) => {
         }
     }
     if (isArrayMetadata && isObjectMetadata) {
-        return MetadataType.ObjectArray;
+        return metadata_type_1.MetadataType.ObjectArray;
     }
     else if (isObjectMetadata) {
-        return MetadataType.Object;
+        return metadata_type_1.MetadataType.Object;
     }
     else if (isArrayMetadata) {
-        return MetadataType.Array;
+        return metadata_type_1.MetadataType.Array;
     }
-    return MetadataType.Primitive;
+    return metadata_type_1.MetadataType.Primitive;
 };
 exports.getMetadataType = getMetadataType;
 function getValidationTypeName(metadata, store) {
