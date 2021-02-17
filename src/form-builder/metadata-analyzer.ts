@@ -1,5 +1,6 @@
-import {  ARRAY_CONTAINS, ARRAY_MAX_SIZE, ARRAY_MIN_SIZE, ARRAY_NOT_CONTAINS, ARRAY_NOT_EMPTY, ARRAY_UNIQUE, getMetadataStorage, IS_ARRAY, IS_INSTANCE, MetadataStorage, ValidationTypes } from 'class-validator';
+import { ARRAY_CONTAINS, ARRAY_MAX_SIZE, ARRAY_MIN_SIZE, ARRAY_NOT_CONTAINS, ARRAY_NOT_EMPTY, ARRAY_UNIQUE, getMetadataStorage, IS_ARRAY, IS_INSTANCE, MetadataStorage, ValidationTypes } from 'class-validator';
 import { ValidationMetadata } from 'class-validator/types/metadata/ValidationMetadata';
+import { MetadataType } from './types/metadata-type';
 
 const arrayValidtionTypes = new Set<string>([
     IS_ARRAY,
@@ -15,13 +16,6 @@ const objectValidationTypes = new Set<string>([
     IS_INSTANCE,
     ValidationTypes.NESTED_VALIDATION,
 ]);
-
-export enum MetadataType {
-    Array,
-    Object,
-    ObjectArray,
-    Primitive,
-}
 
 export const getMetadataType = (validationMetadata: ValidationMetadata[]) => {
     let isArrayMetadata = false;

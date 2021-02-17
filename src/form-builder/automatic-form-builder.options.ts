@@ -1,20 +1,3 @@
-export const enum ValidationMode {
-    /**
-     * Does Validate the whole Object
-     */
-    FullValidation,
-
-    /**
-     * Only validates Properties that exist on the Object
-     */
-    ValidateExistingProperties,
-
-    /**
-     * No validator is applied
-     */
-    None,
-}
-
 export const enum FormBuildMode {
     /**
      * Builds all controls. Is Default value
@@ -59,7 +42,6 @@ export const enum MissingArrayHandling {
 }
 
 export type AutomaticFormBuilderOptions = {
-    validation?: ValidationMode;
     formBuildMode?: FormBuildMode;
     missingObjectHandling?: MissingObjectHandling;
     missingArrayHandling?: MissingArrayHandling;

@@ -1,6 +1,8 @@
+import 'reflect-metadata';
 import { getMetadataStorage, IsArray, IsNotEmpty, IsString, ValidateNested } from "class-validator";
 import { ValidationMetadata } from "class-validator/types/metadata/ValidationMetadata";
-import { getMetadataType, MetadataType } from "../form-builder/metadata-analyzer";
+import { getMetadataType } from "../form-builder/metadata-analyzer";
+import { MetadataType } from "../form-builder/types/metadata-type";
 
 class TestClass {
     @IsString()
@@ -33,7 +35,7 @@ describe('Should read the correct MetadataType for each property', () => {
     const metadata =  metadataStore.getTargetValidationMetadatas(TestClass, null, true, false);
     const groupedMetadata = metadataStore.groupByPropertyName(metadata) as TestMetadata;
 
-    it('Sould identify primitive types', () => {
+    it('Sould identify primitive types', () => {       
         const primitiveType = getMetadataType(groupedMetadata.primitiveType);        
         expect(primitiveType).toBe(MetadataType.Primitive);
     });

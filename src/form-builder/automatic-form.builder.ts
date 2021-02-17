@@ -1,5 +1,5 @@
-import { Injectable, Type } from '@angular/core';
-import { FormBuilder, FormGroup } from '@ng-stack/forms';
+import { Injectable, InjectionToken, Injector, Type } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { getMetadataStorage } from 'class-validator';
 import { ValidationMetadata } from 'class-validator/types/metadata/ValidationMetadata';
 
@@ -8,64 +8,29 @@ import {
     FormBuildMode,
     MissingArrayHandling,
     MissingObjectHandling,
-    ValidationMode,
 } from './automatic-form-builder.options';
-import {
-    validateCompleteForm,
-    validateExistingProperties,
-} from './form-validators';
-import { getMetadataType, MetadataType } from './metadata-analyzer';
-import { getTypeFromMetadataType } from './type-reader';
+import { getMetadataType } from './metadata-analyzer';
+import { defaultTypeStore } from './type-store';
+import { DeepPartial } from './types/deep-partial';
+import { Dictionary } from './types/dictionary';
+import { MetadataType } from './types/metadata-type';
 
-type FormBuilderData<T extends Object> = {
-    [P in keyof T]?: T[P] extends Array<infer U>
-        ? Array<FormBuilderData<U>>
-        : T[P] extends ReadonlyArray<infer U>
-        ? ReadonlyArray<FormBuilderData<U>>
-        : FormBuilderData<T[P]>;
-};
-
-type Dictionary<T> = {
-    [key: string]: T
-}
+const FORM_BUILDER_TOKEN = new InjectionToken<FormBuilder>(null);
 
 @Injectable({
     providedIn: 'root',
 })
 export class AutomaticFormBuilder {
-    public constructor(private readonly formBuilder: FormBuilder) {}
+    public constructor(private readonly injector: Injector) {}
 
     public build<T extends Object>(
         type: Type<T>,
-        data?: FormBuilderData<T>,
+        data?: DeepPartial<T>,
         options?: AutomaticFormBuilderOptions,
-    ): FormGroup<T> {
-        const form = this.buildForm(type, data || {}, options);
-
-        switch (options?.validation) {
-            case ValidationMode.None:
-                break;
-            case ValidationMode.ValidateExistingProperties:
-                const existingPropertyValidator = validateExistingProperties(type);
-                form.setValidators(existingPropertyValidator);
-                existingPropertyValidator(form);
-                break;
-            default:
-                const completeValidator = validateCompleteForm(type);
-                form.setValidators(completeValidator);
-                completeValidator(form);
-        }
-    
-        return form;
-    }
-
-    private buildForm<T extends Object>(
-        type: Type<T>,
-        data?: FormBuilderData<T>,
-        options?: AutomaticFormBuilderOptions,
-    ): FormGroup<T> {
+    ): FormGroup {
+        const formBuilder = this.injector.get(FORM_BUILDER_TOKEN) || this.injector.get(FormBuilder);
         const groupedConstraints = this.getContraints(type);
-        const form = this.formBuilder.group({});
+        const form = formBuilder.group({});
 
         const propertiesToBuild = this.getPropertiesToBuild(
             groupedConstraints,
@@ -79,6 +44,7 @@ export class AutomaticFormBuilder {
             );
 
             const control = this.getControl(
+                formBuilder,
                 type,
                 propertyName,
                 metadataType,
@@ -104,64 +70,46 @@ export class AutomaticFormBuilder {
     }
 
     private getControl<T>(
+        formBuilder: FormBuilder,
         type: Type<T>,
         propertyName: string,
         metadataType: MetadataType,
-        data?: FormBuilderData<T>,
+        data?: DeepPartial<T>,
         options?: AutomaticFormBuilderOptions,
     ) {
         const providedData = data?.[propertyName];
         switch (metadataType) {
             case MetadataType.Primitive:
-                return this.formBuilder.control(providedData);
+                return formBuilder.control(providedData);
             case MetadataType.Array:
-                if (
-                    options?.missingArrayHandling ===
-                        MissingArrayHandling.WriteNull &&
-                    !providedData
-                ) {
-                    return this.formBuilder.control(null);
+                const arrayAsNull = this.shouldWriteNull(providedData, options?.missingArrayHandling);
+                if (arrayAsNull) {
+                    return formBuilder.control(null);
                 }
 
                 const controls = providedData?.map((value: unknown) => {
-                    return this.formBuilder.control(value);
+                    return formBuilder.control(value);
                 });
 
-                return this.formBuilder.array(controls || []);
+                return formBuilder.array(controls || []);
             case MetadataType.Object:
-                if (
-                    options?.missingObjectHandling ===
-                        MissingObjectHandling.WriteNull &&
-                    !providedData
-                ) {
-                    return this.formBuilder.control(null);
+                const objectAsNull = this.shouldWriteNull(providedData, options?.missingObjectHandling);
+                if (objectAsNull) {
+                    return formBuilder.control(null);
                 }
 
-                const childFormType = getTypeFromMetadataType(
-                    type,
-                    propertyName as keyof T,
-                    metadataType,
-                );
-
-                return this.buildForm(childFormType, providedData, options);
+                const childFormType = defaultTypeStore.getType(type, propertyName);
+                return this.build(childFormType, providedData, options);
             case MetadataType.ObjectArray:
-                if (
-                    options?.missingArrayHandling ===
-                        MissingArrayHandling.WriteNull &&
-                    !providedData
-                ) {
-                    return this.formBuilder.control(null);
+                const arrayObjectAsNull = this.shouldWriteNull(providedData, options?.missingObjectHandling);
+                if (arrayObjectAsNull) {
+                    return formBuilder.control(null);
                 }
 
-                const childFormArrayType = getTypeFromMetadataType(
-                    type,
-                    propertyName as keyof T,
-                    metadataType,
-                );
-
+                const childFormArrayType = defaultTypeStore.getType(type, propertyName);
                 const childForms: unknown[] = providedData?.map(
                     (value: unknown) => {
-                        return this.buildForm(
+                        return this.build(
                             childFormArrayType,
                             value,
                             options,
@@ -169,7 +117,7 @@ export class AutomaticFormBuilder {
                     },
                 );
 
-                return this.formBuilder.array(childForms || []);
+                return formBuilder.array(childForms || []);
         }
     }
 
@@ -191,5 +139,10 @@ export class AutomaticFormBuilder {
             default:
                 return allFields;
         }
+    }
+
+    private shouldWriteNull(value: unknown, handling?: MissingObjectHandling | MissingArrayHandling){
+        const isWriteNullHandling = handling === MissingObjectHandling.WriteNull || handling === MissingArrayHandling.WriteNull;
+        return !value && isWriteNullHandling;
     }
 }

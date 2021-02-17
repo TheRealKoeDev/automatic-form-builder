@@ -1,17 +1,17 @@
-import { Type } from "class-transformer";
 import { IsArray, IsNotEmpty, IsString, ValidateNested } from "class-validator";
 
-import { MetadataType } from "../form-builder/metadata-analyzer";
-import { getTypeFromMetadataType } from "../form-builder/type-reader";
+import { BuildType } from '../form-builder/build-type';
+import { defaultTypeStore } from '../form-builder/type-store';
 
 class ChildClass {
     @IsString()
     public testPropety: string;
 }
 
+
 class ParentClass {
     // Does not build this property, because it has no Decorator from @ng-stack/forms 
-    public unbuildProperty: unknown;
+    public unbuildProperty: unknown = "TEST";
     
     @IsString()
     public primitiveProperty: string;
@@ -22,22 +22,24 @@ class ParentClass {
     
     @IsNotEmpty()
     @ValidateNested()
-    @Type(() => ChildClass)
+    @BuildType(() => ChildClass)
+    
     public objectProperty: ChildClass;    
    
     @ValidateNested({ each: true })
     @IsArray()
-    @Type(() => ChildClass)
+    @BuildType(() => ChildClass)
     public objectArrayProperty: ChildClass[];
+
 }
 
 describe('Should read the correct type for child elements', () => {
     it('Get the child type from object property', () => {
-        const childType = getTypeFromMetadataType(ParentClass, 'objectProperty', MetadataType.Object);
+        const childType = defaultTypeStore.getType(ParentClass, 'objectProperty');
         expect(childType).toBe(ChildClass);
     });
     it('Get the child type from object-array property', () => {
-        const childType = getTypeFromMetadataType(ParentClass, 'objectArrayProperty', MetadataType.ObjectArray);
+        const childType = defaultTypeStore.getType(ParentClass, 'objectProperty');
         expect(childType).toBe(ChildClass);
     });
 })
