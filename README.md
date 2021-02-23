@@ -1,6 +1,6 @@
 # AutomaticFormBuilder
 
-Automates [@ng-stack/forms](https://www.npmjs.com/package/@ng-stack/forms) form creation,
+Automates [@angular/forms](https://www.npmjs.com/package/@angular/forms) form creation,
 by interpreting the ValidationMetadata from [class-validator](https://www.npmjs.com/package/class-validator).
 
 It requires the PeerDependencies of @angular/core, @angular/forms, class-transformer and class-validator to be installed to work.
