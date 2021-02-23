@@ -3,24 +3,18 @@
 Automates [@ng-stack/forms](https://www.npmjs.com/package/@ng-stack/forms) form creation,
 by interpreting the ValidationMetadata from [class-validator](https://www.npmjs.com/package/class-validator).
 
-It requires the PeerDependencies of @ng-stack/forms, class-transformer and class-validator to be installed to work.
+It requires the PeerDependencies of @angular/core, @angular/forms, class-transformer and class-validator to be installed to work.
 
 #### Installation
 
 ##### npm
 ````
-npm install automatic-form-builder
-npm install @ng-stack/forms
-npm install class-validator
-npm install class-transformer
+npm install automatic-form-builder @angular/core @angular/forms class-validator class-transformer
 ````
 
 ##### npm via git
 ````
-npm install git+https://github.com/TheRealKoeDev/automatic-form-builder.git
-npm install @ng-stack/forms
-npm install class-validator
-npm install class-transformer
+npm install git+https://github.com/TheRealKoeDev/automatic-form-builder.git @angular/core @angular/forms class-validator class-transformer
 ````
 
 ## Usage
@@ -29,13 +23,12 @@ npm install class-transformer
 <summary>Imports</summary>
     
 ```typescript
-import { FormGroup } from '@ng-stack/forms';
+import { FormGroup } from '@angular/forms';
 import { 
     AutomaticFormBuilder,
     FormBuildMode,
     MissingArrayHandling,
-    MissingObjectHandling,
-    ValidationMode
+    MissingObjectHandling
 } from 'automatic-form-builder'
 import { 
     IsArray,
@@ -86,7 +79,7 @@ class ParentClass {
     styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-    public form: FormGroup<ParentClass>:
+    public form: FormGroup
     
     public constructor(automaticFormBuilder: AutomaticFormBuilder){
         // Builds the whole FormGroup
@@ -96,21 +89,17 @@ export class AppComponent {
         this.form = automaticFormBuilder.build(ParentClass, { primitiveProperty: 'some text' });
         
         /**
-         *   Builds the FormGroup for ParentClass with only the control for 'primitiveProperty'  
-         *   and skips validation for other not existing FormControls.
+         *   Builds the FormGroup for ParentClass with only the control for 'primitiveProperty'
          **/ 
         this.form = automaticFormBuilder.build(ParentClass, { primitiveProperty: 'some other text' }, {
-            validation: ValidationMode.ValidateExistingProperties,
             formBuildMode: FormBuildMode.ProvidedDataOnly
         });
 
         /**
          *   Builds the FormGroup for ParentClass with all direct child controls,  
-         *   skips validation completely and writes a FormControl with value null
-         *   for ChildArrays and ChildObjects that are not provided in the data.
+         *   and writes a FormControl with value null, for ChildArrays and ChildObjects that are not provided in the data.
          **/ 
         this.form = automaticFormBuilder.build(ParentClass, { }, {
-            validation: ValidationMode.None,
             formBuildMode: FormBuildMode.ProvidedObjectsOnly,
             missingObjectHandling: MissingObjectHandling.WriteNull,
             missingArrayHandling: MissingArrayHandling.WriteNull
@@ -119,3 +108,5 @@ export class AppComponent {
 }
 
 ```
+You can also specify a custom internal FormBuilder via the token `FORM_BUILDER_TOKEN` if you want to use the builder from @ng-stack/forms for example.
+
