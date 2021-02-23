@@ -8,16 +8,17 @@ export function BuildType(typeFunction?: (type?: TypeHelpOptions) => Function, o
     return function (target: Object, propertyKey: string | symbol){
         const ParentConstructor = target.constructor as TypeConstructor<unknown>;
 
+        const property = propertyKey?.toString();
         const newObject = new ParentConstructor();
         const typeHelpOptions: TypeHelpOptions = {
             newObject,
             object: target,
-            property: propertyKey?.toString(),
+            property,
         }
 
         const ChildType = typeFunction(typeHelpOptions) as TypeConstructor<unknown>;
-        defaultTypeStore.registerType(ParentConstructor, propertyKey?.toString(), ChildType);
+        defaultTypeStore.registerType(ParentConstructor, property, ChildType);
 
-        Type(() => ChildType, options)(target, propertyKey);
+        Type(() => ChildType, options)(target, property);
     }
 }
