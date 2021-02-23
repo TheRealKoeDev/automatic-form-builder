@@ -26,6 +26,7 @@ npm install git+https://github.com/TheRealKoeDev/automatic-form-builder.git @ang
 import { FormGroup } from '@angular/forms';
 import { 
     AutomaticFormBuilder,
+    BuildType,
     FormBuildMode,
     MissingArrayHandling,
     MissingObjectHandling
@@ -36,7 +37,6 @@ import {
     IsString,
     ValidateNested
 } from "class-validator";
-import { Type } from 'class-transformer';
 ```
 </details>
 <details>
@@ -49,7 +49,7 @@ class ChildClass {
 }
 
 class ParentClass {
-    // Does not build this property, because it has no Decorator from @ng-stack/forms 
+    // Does not build this property, because it has no Decorator from class-validator 
     public unbuildProperty: unknown;
     
     @IsString()
@@ -61,12 +61,12 @@ class ParentClass {
     
     @IsNotEmpty()
     @ValidateNested()
-    @Type(() => ChildClass)
+    @BuildType(() => ChildClass)
     public objectProperty: ChildClass;    
    
     @ValidateNested({ each: true })
     @IsArray()
-    @Type(() => ChildClass)
+    @BuildType(() => ChildClass)
     public objectArrayProperty: ChildClass[];
 }
 ```
@@ -108,5 +108,9 @@ export class AppComponent {
 }
 
 ```
-You can also specify a custom internal FormBuilder via the token `FORM_BUILDER_TOKEN` if you want to use the builder from @ng-stack/forms for example.
+
+#### Notes 
+- You can also specify a custom internal FormBuilder via the token `FORM_BUILDER_TOKEN` if you want to use the builder from [@ng-stack/forms](https://www.npmjs.com/package/@ng-stack/forms) for example.
+- The `BuildType` decorator also calls the `Type` decorator from [class-transformer](https://www.npmjs.com/package/class-transformer), so it is not necessary to use the `Type` decorator for nested validations.
+- The Builder will only recognize the Type of Child-Class-Objects if the `BuildType` decorator is used.
 

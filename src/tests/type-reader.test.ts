@@ -10,7 +10,7 @@ class ChildClass {
 
 
 class ParentClass {
-    // Does not build this property, because it has no Decorator from @ng-stack/forms 
+    // Does not build this property, because it has no Decorator from class-validator 
     public unbuildProperty: unknown = "TEST";
     
     @IsString()
