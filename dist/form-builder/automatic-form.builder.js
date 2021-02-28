@@ -58,7 +58,7 @@ let AutomaticFormBuilder = class AutomaticFormBuilder {
                     return formBuilder.control(null);
                 }
                 const objectTypeMetadata = storage_1.defaultMetadataStorage.findTypeMetadata(type, propertyName);
-                return this.build(objectTypeMetadata.reflectedType, providedData, options);
+                return this.build((objectTypeMetadata === null || objectTypeMetadata === void 0 ? void 0 : objectTypeMetadata.reflectedType) || Object, providedData, options);
             case metadata_type_1.MetadataType.ObjectArray:
                 const arrayObjectAsNull = this.shouldWriteNull(providedData, options === null || options === void 0 ? void 0 : options.missingObjectHandling);
                 if (arrayObjectAsNull) {
@@ -66,7 +66,7 @@ let AutomaticFormBuilder = class AutomaticFormBuilder {
                 }
                 const objectArrayTypeMetadata = storage_1.defaultMetadataStorage.findTypeMetadata(type, propertyName);
                 const childForms = providedData === null || providedData === void 0 ? void 0 : providedData.map((value) => {
-                    return this.build(objectArrayTypeMetadata.reflectedType, value, options);
+                    return this.build((objectArrayTypeMetadata === null || objectArrayTypeMetadata === void 0 ? void 0 : objectArrayTypeMetadata.reflectedType) || Object, value, options);
                 });
                 return formBuilder.array(childForms || []);
         }

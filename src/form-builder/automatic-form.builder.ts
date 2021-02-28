@@ -99,7 +99,7 @@ export class AutomaticFormBuilder {
                 }
 
                 const objectTypeMetadata = defaultMetadataStorage.findTypeMetadata(type, propertyName);
-                return this.build(objectTypeMetadata.reflectedType, providedData, options);
+                return this.build(objectTypeMetadata?.reflectedType || Object, providedData, options);
             case MetadataType.ObjectArray:
                 const arrayObjectAsNull = this.shouldWriteNull(providedData, options?.missingObjectHandling);
                 if (arrayObjectAsNull) {
@@ -110,7 +110,7 @@ export class AutomaticFormBuilder {
                 const childForms: unknown[] = providedData?.map(
                     (value: unknown) => {
                         return this.build(
-                            objectArrayTypeMetadata.reflectedType,
+                            objectArrayTypeMetadata?.reflectedType || Object,
                             value,
                             options,
                         );
