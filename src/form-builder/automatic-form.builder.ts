@@ -10,7 +10,7 @@ import {
     MissingObjectHandling,
 } from './automatic-form-builder.options';
 import { getMetadataType } from './metadata-analyzer';
-import { defaultMetadataStorage } from 'class-transformer/storage';
+import { defaultMetadataStorage } from 'class-transformer/types/storage';
 import { DeepPartial } from './types/deep-partial';
 import { Dictionary } from './types/dictionary';
 import { MetadataType } from './types/metadata-type';
