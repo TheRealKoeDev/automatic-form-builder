@@ -10,7 +10,7 @@ import {
     MissingObjectHandling,
 } from './automatic-form-builder.options';
 import { getMetadataType } from './metadata-analyzer';
-import { defaultTypeStore } from './type-store';
+import { defaultMetadataStorage } from 'class-transformer/storage';
 import { DeepPartial } from './types/deep-partial';
 import { Dictionary } from './types/dictionary';
 import { MetadataType } from './types/metadata-type';
@@ -98,19 +98,19 @@ export class AutomaticFormBuilder {
                     return formBuilder.control(null);
                 }
 
-                const childFormType = defaultTypeStore.getType(type, propertyName);
-                return this.build(childFormType, providedData, options);
+                const objectTypeMetadata = defaultMetadataStorage.findTypeMetadata(type, propertyName);
+                return this.build(objectTypeMetadata.reflectedType, providedData, options);
             case MetadataType.ObjectArray:
                 const arrayObjectAsNull = this.shouldWriteNull(providedData, options?.missingObjectHandling);
                 if (arrayObjectAsNull) {
                     return formBuilder.control(null);
                 }
 
-                const childFormArrayType = defaultTypeStore.getType(type, propertyName);
+                const objectArrayTypeMetadata = defaultMetadataStorage.findTypeMetadata(type, propertyName);
                 const childForms: unknown[] = providedData?.map(
                     (value: unknown) => {
                         return this.build(
-                            childFormArrayType,
+                            objectArrayTypeMetadata.reflectedType,
                             value,
                             options,
                         );

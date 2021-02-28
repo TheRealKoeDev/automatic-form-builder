@@ -9,9 +9,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+require("reflect-metadata");
+const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
-const build_type_1 = require("../form-builder/build-type");
-const type_store_1 = require("../form-builder/type-store");
+const storage_1 = require("class-transformer/storage");
 class ChildClass {
 }
 __decorate([
@@ -20,7 +21,7 @@ __decorate([
 ], ChildClass.prototype, "testPropety", void 0);
 class ParentClass {
     constructor() {
-        // Does not build this property, because it has no Decorator from @ng-stack/forms 
+        // Does not build this property, because it has no Decorator from class-validator 
         this.unbuildProperty = "TEST";
     }
 }
@@ -36,23 +37,23 @@ __decorate([
 __decorate([
     class_validator_1.IsNotEmpty(),
     class_validator_1.ValidateNested(),
-    build_type_1.BuildType(() => ChildClass),
+    class_transformer_1.Type(() => ChildClass),
     __metadata("design:type", ChildClass)
 ], ParentClass.prototype, "objectProperty", void 0);
 __decorate([
     class_validator_1.ValidateNested({ each: true }),
     class_validator_1.IsArray(),
-    build_type_1.BuildType(() => ChildClass),
+    class_transformer_1.Type(() => ChildClass),
     __metadata("design:type", Array)
 ], ParentClass.prototype, "objectArrayProperty", void 0);
 describe('Should read the correct type for child elements', () => {
     it('Get the child type from object property', () => {
-        const childType = type_store_1.defaultTypeStore.getType(ParentClass, 'objectProperty');
-        expect(childType).toBe(ChildClass);
+        const childType = storage_1.defaultMetadataStorage.findTypeMetadata(ParentClass, 'objectProperty');
+        expect(childType.reflectedType).toBe(ChildClass);
     });
     it('Get the child type from object-array property', () => {
-        const childType = type_store_1.defaultTypeStore.getType(ParentClass, 'objectProperty');
-        expect(childType).toBe(ChildClass);
+        const childType = storage_1.defaultMetadataStorage.findTypeMetadata(ParentClass, 'objectProperty');
+        expect(childType.reflectedType).toBe(ChildClass);
     });
 });
 //# sourceMappingURL=type-reader.test.js.map

@@ -1,7 +1,7 @@
 {
   "name": "automatic-form-builder",
-  "version": "0.1.4",
-  "description": "An automatic formbuilder using @angular/forms",
+  "version": "0.2.0",
+  "description": "An automatic formbuilder for @angular/forms",
   "main": "dist/index.js",
   "bin": "dist/index.js",
   "types": "dist",
