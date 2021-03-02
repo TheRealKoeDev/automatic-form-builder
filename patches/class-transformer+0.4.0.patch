@@ -1,0 +1,10 @@
+diff --git a/node_modules/class-transformer/types/index.d.ts b/node_modules/class-transformer/types/index.d.ts
+index a699a5b..b53549c 100644
+--- a/node_modules/class-transformer/types/index.d.ts
++++ b/node_modules/class-transformer/types/index.d.ts
+@@ -1,3 +1,5 @@
++export { defaultMetadataStorage } from './storage';
++
+ import { ClassTransformOptions } from './interfaces';
+ import { ClassConstructor } from './interfaces';
+ export { ClassTransformer } from './ClassTransformer';

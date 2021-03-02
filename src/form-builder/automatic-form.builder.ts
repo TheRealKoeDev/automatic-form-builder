@@ -13,8 +13,7 @@ import {
 } from './automatic-form-builder.options';
 import { getMetadataType } from './metadata-analyzer';
 
-import { defaultMetadataStorage as esm5DefaultMetadataStorage } from 'class-transformer/esm5/storage';
-import { MetadataStorage } from 'class-transformer/types/MetadataStorage';
+import { defaultMetadataStorage } from 'class-transformer';
 
 import { DeepPartial } from './types/deep-partial';
 import { Dictionary } from './types/dictionary';
@@ -22,7 +21,6 @@ import { MetadataType } from './types/metadata-type';
 
 export const FORM_BUILDER_TOKEN = new InjectionToken<FormBuilder>(null);
 
-const defaultMetadataStorage: MetadataStorage = esm5DefaultMetadataStorage;
 
 @Injectable({
     providedIn: 'root',
