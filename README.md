@@ -7,11 +7,6 @@ It requires the PeerDependencies of @angular/core, @angular/forms, class-transfo
 
 #### Installation
 
-##### npm
-
-- npm install automatic-form-builder @angular/core @angular/forms class-validator class-transformer
-
-
 ##### npm via git
 
 - npm install `git+https://github.com/TheRealKoeDev/automatic-form-builder.git` @angular/core @angular/forms class-validator class-transformer
