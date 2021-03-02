@@ -8,8 +8,7 @@
   "scripts": {
     "build": "tsc -p .",
     "tsc": "tsc",
-    "test": "jest",
-    "publish-to-npm": "npm i && npm run build && npm publish"
+    "test": "jest"
   },
   "repository": {
     "type": "git",

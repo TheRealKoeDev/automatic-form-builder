@@ -13,12 +13,18 @@ import {
 } from './automatic-form-builder.options';
 import { getMetadataType } from './metadata-analyzer';
 
-import { defaultMetadataStorage } from 'class-transformer/cjs/storage';
+import { defaultMetadataStorage as esm2015DefaultMetadataStorage } from 'class-transformer/esm2015/storage';
+import { defaultMetadataStorage as esm5DefaultMetadataStorage } from 'class-transformer/esm5/storage';
+import { defaultMetadataStorage as cjsDefaultMetadataStorage } from 'class-transformer/cjs/storage';
+import { MetadataStorage } from 'class-transformer/types/MetadataStorage';
+
 import { DeepPartial } from './types/deep-partial';
 import { Dictionary } from './types/dictionary';
 import { MetadataType } from './types/metadata-type';
 
 export const FORM_BUILDER_TOKEN = new InjectionToken<FormBuilder>(null);
+
+const defaultMetadataStorage: MetadataStorage = esm2015DefaultMetadataStorage || esm5DefaultMetadataStorage || cjsDefaultMetadataStorage;
 
 @Injectable({
     providedIn: 'root',
