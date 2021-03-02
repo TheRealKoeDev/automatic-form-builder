@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { InjectionToken, Injector, Type } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AutomaticFormBuilderOptions } from './automatic-form-builder.options';

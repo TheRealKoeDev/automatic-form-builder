@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+
 import { Injectable, InjectionToken, Injector, Type } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { getMetadataStorage } from 'class-validator';

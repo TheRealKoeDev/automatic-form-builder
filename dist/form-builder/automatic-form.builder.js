@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AutomaticFormBuilder = exports.FORM_BUILDER_TOKEN = void 0;
+require("reflect-metadata");
 const core_1 = require("@angular/core");
 const forms_1 = require("@angular/forms");
 const class_validator_1 = require("class-validator");
