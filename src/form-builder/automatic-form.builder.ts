@@ -13,14 +13,11 @@ import {
 } from './automatic-form-builder.options';
 import { getMetadataType } from './metadata-analyzer';
 
-import { defaultMetadataStorage } from 'class-transformer';
-
 import { DeepPartial } from './types/deep-partial';
 import { Dictionary } from './types/dictionary';
 import { MetadataType } from './types/metadata-type';
 
 export const FORM_BUILDER_TOKEN = new InjectionToken<FormBuilder>(null);
-
 
 @Injectable({
     providedIn: 'root',
@@ -103,7 +100,7 @@ export class AutomaticFormBuilder {
                     return formBuilder.control(null);
                 }
 
-                const objectTypeMetadata = defaultMetadataStorage.findTypeMetadata(type, propertyName);
+                const objectTypeMetadata = null; //defaultMetadataStorage.findTypeMetadata(type, propertyName);
                 return this.build(objectTypeMetadata?.reflectedType || Object, providedData, options);
             case MetadataType.ObjectArray:
                 const arrayObjectAsNull = this.shouldWriteNull(providedData, options?.missingObjectHandling);
@@ -111,7 +108,7 @@ export class AutomaticFormBuilder {
                     return formBuilder.control(null);
                 }
 
-                const objectArrayTypeMetadata = defaultMetadataStorage.findTypeMetadata(type, propertyName);
+                const objectArrayTypeMetadata = null; //defaultMetadataStorage.findTypeMetadata(type, propertyName);
                 const childForms: unknown[] = providedData?.map(
                     (value: unknown) => {
                         return this.build(

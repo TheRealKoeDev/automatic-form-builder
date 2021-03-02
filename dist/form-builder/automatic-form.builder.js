@@ -15,7 +15,6 @@ const core_1 = require("@angular/core");
 const forms_1 = require("@angular/forms");
 const class_validator_1 = require("class-validator");
 const metadata_analyzer_1 = require("./metadata-analyzer");
-const class_transformer_1 = require("class-transformer");
 const metadata_type_1 = require("./types/metadata-type");
 exports.FORM_BUILDER_TOKEN = new core_1.InjectionToken(null);
 let AutomaticFormBuilder = class AutomaticFormBuilder {
@@ -58,14 +57,14 @@ let AutomaticFormBuilder = class AutomaticFormBuilder {
                 if (objectAsNull) {
                     return formBuilder.control(null);
                 }
-                const objectTypeMetadata = class_transformer_1.defaultMetadataStorage.findTypeMetadata(type, propertyName);
+                const objectTypeMetadata = null; //defaultMetadataStorage.findTypeMetadata(type, propertyName);
                 return this.build((objectTypeMetadata === null || objectTypeMetadata === void 0 ? void 0 : objectTypeMetadata.reflectedType) || Object, providedData, options);
             case metadata_type_1.MetadataType.ObjectArray:
                 const arrayObjectAsNull = this.shouldWriteNull(providedData, options === null || options === void 0 ? void 0 : options.missingObjectHandling);
                 if (arrayObjectAsNull) {
                     return formBuilder.control(null);
                 }
-                const objectArrayTypeMetadata = class_transformer_1.defaultMetadataStorage.findTypeMetadata(type, propertyName);
+                const objectArrayTypeMetadata = null; //defaultMetadataStorage.findTypeMetadata(type, propertyName);
                 const childForms = providedData === null || providedData === void 0 ? void 0 : providedData.map((value) => {
                     return this.build((objectArrayTypeMetadata === null || objectArrayTypeMetadata === void 0 ? void 0 : objectArrayTypeMetadata.reflectedType) || Object, value, options);
                 });
