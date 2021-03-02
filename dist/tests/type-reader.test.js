@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 require("reflect-metadata");
 const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
-const storage_1 = require("class-transformer/types/storage");
+const storage_1 = require("class-transformer/cjs/storage");
 class ChildClass {
 }
 __decorate([

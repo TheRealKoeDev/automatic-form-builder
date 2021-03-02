@@ -2,7 +2,7 @@ import 'reflect-metadata';
 
 import { Type } from "class-transformer";
 import { IsArray, IsNotEmpty, IsString, ValidateNested } from "class-validator";
-import { defaultMetadataStorage } from 'class-transformer/types/storage';
+import { defaultMetadataStorage } from 'class-transformer/cjs/storage';
 
 class ChildClass {
     @IsString()
